@@ -1,0 +1,42 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"50 mcc_generated_files/device_config.c
+[p x FEXTOSC  =  OFF     ]
+"51
+[p x RSTOSC  =  HFINTOSC_32MHZ     ]
+"52
+[p x CLKOUTEN  =  OFF     ]
+"53
+[p x VDDAR  =  HI     ]
+"56
+[p x MCLRE  =  EXTMCLR     ]
+"57
+[p x PWRTS  =  PWRT_OFF     ]
+"58
+[p x WDTE  =  OFF     ]
+"59
+[p x BOREN  =  ON     ]
+"60
+[p x BORV  =  LO     ]
+"61
+[p x PPS1WAY  =  ON     ]
+"62
+[p x STVREN  =  ON     ]
+"65
+[p x BBSIZE  =  BB512     ]
+"66
+[p x BBEN  =  OFF     ]
+"67
+[p x SAFEN  =  OFF     ]
+"68
+[p x WRTAPP  =  OFF     ]
+"69
+[p x WRTB  =  OFF     ]
+"70
+[p x WRTC  =  OFF     ]
+"71
+[p x WRTSAF  =  OFF     ]
+"72
+[p x LVP  =  ON     ]
+"75
+[; ;mcc_generated_files/device_config.c: 75: 
+[p x CP  =  OFF     ]
