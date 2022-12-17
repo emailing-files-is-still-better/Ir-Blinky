@@ -732,76 +732,41 @@ void TMR2_LoadPeriodRegister(uint8_t periodVal);
 
 /**
   @Summary
-    Timer Interrupt Service Routine
+    Boolean routine to poll or to check for the match flag on the fly.
 
   @Description
-    Timer Interrupt Service Routine is called by the Interrupt Manager.
+    This function is called to check for the timer match flag.
+    This function is usd in timer polling method.
 
   @Preconditions
-    Initialize  the TMR2 module with interrupt before calling this isr.
+    Initialize  the TMR2 module before calling this routine.
 
   @Param
     None
 
   @Returns
-    None
+    true - timer match has occured.
+    false - timer match has not occured.
+
+  @Example
+    <code>
+    while(1)
+    {
+        // check the match flag
+        if(TMR2_HasOverflowOccured())
+        {
+            // Do something else...
+
+            // clear the TMR2 match interrupt flag
+            TMR2IF = 0;
+
+            // Reload the TMR2 value
+            TMR2_Reload();
+        }
+    }
+    </code>
 */
-void TMR2_ISR(void);
-
-/**
-  @Summary
-    Set Timer Interrupt Handler
-
-  @Description
-    This sets the function to be called during the ISR
-
-  @Preconditions
-    Initialize  the TMR2 module with interrupt before calling this.
-
-  @Param
-    Address of function to be set
-
-  @Returns
-    None
-*/
- void TMR2_SetInterruptHandler(void (* InterruptHandler)(void));
-
-/**
-  @Summary
-    Timer Interrupt Handler
-
-  @Description
-    This is a function pointer to the function that will be called during the ISR
-
-  @Preconditions
-    Initialize  the TMR2 module with interrupt before calling this isr.
-
-  @Param
-    None
-
-  @Returns
-    None
-*/
-extern void (*TMR2_InterruptHandler)(void);
-
-/**
-  @Summary
-    Default Timer Interrupt Handler
-
-  @Description
-    This is the default Interrupt Handler function
-
-  @Preconditions
-    Initialize  the TMR2 module with interrupt before calling this isr.
-
-  @Param
-    None
-
-  @Returns
-    None
-*/
-void TMR2_DefaultInterruptHandler(void);
-
+bool TMR2_HasOverflowOccured(void);
 
  #ifdef __cplusplus  // Provide C++ Compatibility
 

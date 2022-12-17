@@ -55,6 +55,7 @@
 #include "interrupt_manager.h"
 #include "pwm3.h"
 #include "tmr2.h"
+#include "tmr0.h"
 
 
 

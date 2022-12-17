@@ -94,8 +94,6 @@ void PIN_MANAGER_Initialize(void)
 
 
    
-    // Enable IOCI interrupt 
-    PIE0bits.IOCIE = 1; 
     
 	
     RA4PPS = 0x03;   //RA4->PWM3:PWM3OUT;    

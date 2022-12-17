@@ -52,20 +52,25 @@ void main(void)
     SYSTEM_Initialize();
 
  
-uint16_t dutycycle;
+    uint16_t dutycycle;
 
-     PWM3_Initialize();
-   
+    PWM3_Initialize();
+    TMR0_Initialize();
+    #define IR1 PWM3_LoadDutyValue(51);
+    #define IR0 PWM3_LoadDutyValue(0); 
+     // #define CODE    00100010    // Address to transmit out
+
+     //#define PREAMBLE 000100111000100111
   
     
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
     // Use the following macros to:
 
     // Enable the Global Interrupts
-    //INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
 
     // Enable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalInterruptDisable();
@@ -74,12 +79,19 @@ uint16_t dutycycle;
     //INTERRUPT_PeripheralInterruptDisable();
 
     while (1)
-    {
-          
-      
+    {      
+       //output(PREAMBLE);
+       //output(CODE);
+       //delay(some_amount);
         
+      //PWM3_LoadDutyValue(0);
+        IR1;
+        __delay_us(20);  
+       //PWM3_LoadDutyValue(51);
+        IR0;
+        __delay_us(10);
         
-        // Add your application code
+       
     }
 }
 /**

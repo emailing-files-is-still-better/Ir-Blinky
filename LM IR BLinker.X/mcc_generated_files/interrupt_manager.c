@@ -52,21 +52,10 @@
 void __interrupt() INTERRUPT_InterruptManager (void)
 {
     // interrupt handler
-    if(PIE0bits.IOCIE == 1 && PIR0bits.IOCIF == 1)
+    if(PIE0bits.TMR0IE == 1 && PIR0bits.TMR0IF == 1)
     {
-        PIN_MANAGER_IOC();
+        TMR0_ISR();
     }
-    else if(INTCONbits.PEIE == 1)
-    {
-        if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
-        {
-            TMR2_ISR();
-        } 
-        else
-        {
-            //Unhandled Interrupt
-        }
-    }      
     else
     {
         //Unhandled Interrupt
