@@ -43,9 +43,21 @@
 
 #include "mcc_generated_files/mcc.h"
 
-/*
-                         Main application
- */
+// ========== DEFINES ==========
+#define LED_PIN     LATAbits.LATA3
+#define PWM_EN      PWM3CONbits.EN
+ 
+
+// ========== GLOBAL VARIABLES ==========
+const bool pattern[] = {0, 1, 0, 1, 1, 1};
+uint8_t patternIndex = 0;
+
+
+// ========== FUNCTION PROTOTYPES ==========
+void bitTimerInterrupt();
+
+
+// ========== MAIN ==========
 void main(void)
 {
     // initialize the device
@@ -56,9 +68,10 @@ void main(void)
 
     PWM3_Initialize();
     TMR0_Initialize();
-    #define IR1 PWM3_LoadDutyValue(51);
-    #define IR0 PWM3_LoadDutyValue(0); 
+    
      // #define CODE    00100010    // Address to transmit out
+    
+    TMR0_SetInterruptHandler(bitTimerInterrupt);
 
      //#define PREAMBLE 000100111000100111
   
@@ -71,12 +84,6 @@ void main(void)
 
     // Enable the Peripheral Interrupts
     INTERRUPT_PeripheralInterruptEnable();
-
-    // Disable the Global Interrupts
-    //INTERRUPT_GlobalInterruptDisable();
-
-    // Disable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptDisable();
 
     while (1)
     {      
@@ -94,6 +101,14 @@ void main(void)
        
     }
 }
-/**
- End of File
-*/
+
+
+// ========== LOCAL FUNCTIONS ==========
+void bitTimerInterrupt() {
+    PWM_EN = pattern[patternIndex];
+    
+    // Increment the pattern index and reset to 0 if you've looped back around
+    if (++patternIndex >= sizeof(pattern)) {        // ++var will increment var by one before using it
+        patternIndex = 0;
+    }
+}
