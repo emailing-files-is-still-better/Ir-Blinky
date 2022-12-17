@@ -49,7 +49,7 @@
  
 
 // ========== GLOBAL VARIABLES ==========
-const bool pattern[] = {0, 1, 0, 1, 1, 1};
+const bool pattern[] = {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 uint8_t patternIndex = 0;
 
 
@@ -90,13 +90,14 @@ void main(void)
        //output(PREAMBLE);
        //output(CODE);
        //delay(some_amount);
-        
-      //PWM3_LoadDutyValue(0);
-        IR1;
-        __delay_us(20);  
-       //PWM3_LoadDutyValue(51);
-        IR0;
-        __delay_us(10);
+        if (LED_PIN=0)
+        {
+            PWM3_LoadDutyValue(0);
+        }
+        else
+        {
+            PWM3_LoadDutyValue(51); 
+        }
         
        
     }

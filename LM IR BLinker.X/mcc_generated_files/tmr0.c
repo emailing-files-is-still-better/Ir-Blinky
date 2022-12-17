@@ -80,8 +80,8 @@ void TMR0_Initialize(void)
     // Set Default Interrupt Handler
     TMR0_SetInterruptHandler(TMR0_DefaultInterruptHandler);
 
-    // T0OUTPS 1:2; T0EN enabled; T016BIT 8-bit; 
-    T0CON0 = 0x81;
+    // T0OUTPS 1:1; T0EN enabled; T016BIT 8-bit; 
+    T0CON0 = 0x80;
 }
 
 void TMR0_StartTimer(void)
@@ -128,7 +128,6 @@ void TMR0_ISR(void)
     }
 
     // add your TMR0 interrupt custom code
-
 }
 
 
