@@ -1,61 +1,22 @@
-/**
-  Generated Main Source File
-
-  Company:
-    Microchip Technology Inc.
-
-  File Name:
-    main.c
-
-  Summary:
-    This is the main file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
-
-  Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F15214
-        Driver Version    :  2.00
-*/
-
-/*
-    (c) 2018 Microchip Technology Inc. and its subsidiaries. 
-    
-    Subject to your compliance with these terms, you may use Microchip software and any 
-    derivatives exclusively with Microchip products. It is your responsibility to comply with third party 
-    license terms applicable to your use of third party software (including open source software) that 
-    may accompany Microchip software.
-    
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY 
-    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS 
-    FOR A PARTICULAR PURPOSE.
-    
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP 
-    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO 
-    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL 
-    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT 
-    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS 
-    SOFTWARE.
-*/
-
 #include "mcc_generated_files/mcc.h"
 
 // ========== DEFINES ==========
-#define LED_PIN     LATAbits.LATA3
-#define PWM_EN      PWM3CONbits.EN
+#define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
+#define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
  
 
 // ========== GLOBAL VARIABLES ==========
-const bool pattern[] = {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
-uint8_t patternIndex = 0;
+const bool preamble[] = {0, 0, 0, 1, 0, 0, 1, 1, 1,
+                         0, 0, 0, 1, 0, 0, 1, 1, 1};          // Preamble
+const bool pattern[] = {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};  // Data of our packet
+const bool delayBetweenTransmissions[30] = {0};               // Fill an array of zeros
+bool* arrayStartPtr = NULL;                                   // Points to the beginning of an array
+uint8_t bitIndex = 0;                                         // Keeps track of our bit position
 
 
 // ========== FUNCTION PROTOTYPES ==========
 void bitTimerInterrupt();
-
+void transmitBits(bool* arrayStart, uint8_t size);
 
 // ========== MAIN ==========
 void main(void)
@@ -63,21 +24,10 @@ void main(void)
     // initialize the device
     SYSTEM_Initialize();
 
- 
-    uint16_t dutycycle;
-
     PWM3_Initialize();
     TMR0_Initialize();
     
-     // #define CODE    00100010    // Address to transmit out
-    
     TMR0_SetInterruptHandler(bitTimerInterrupt);
-
-     //#define PREAMBLE 000100111000100111
-  
-    
-    // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
-    // Use the following macros to:
 
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();
@@ -86,30 +36,22 @@ void main(void)
     INTERRUPT_PeripheralInterruptEnable();
 
     while (1)
-    {      
-       //output(PREAMBLE);
-       //output(CODE);
-       //delay(some_amount);
-        if (LED_PIN=0)
-        {
-            PWM3_LoadDutyValue(0);
-        }
-        else
-        {
-            PWM3_LoadDutyValue(51); 
-        }
-        
-       
+    {
+      transmitBits(&preamble[0], sizeof(preamble));
+      transmitBits(&pattern[0], sizeof(pattern));
+      transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
     }
 }
 
 
 // ========== LOCAL FUNCTIONS ==========
 void bitTimerInterrupt() {
-    PWM_EN = pattern[patternIndex];
-    
-    // Increment the pattern index and reset to 0 if you've looped back around
-    if (++patternIndex >= sizeof(pattern)) {        // ++var will increment var by one before using it
-        patternIndex = 0;
-    }
+    PWM_EN = arrayStartPtr[bitIndex++];   // Enable or Disable PWM based on current bit, then increment index
+}
+
+
+void transmitBits(bool* arrayStart, uint8_t size) {
+  bitIndex = 0;               // Re-initialize bit index
+  arrayStartPtr = arrayStart; // Point to the start of the array we want to transmit
+  while(bitIndex < size);     // Wait here until the bit index reaches the end of the array
 }
