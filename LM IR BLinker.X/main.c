@@ -6,10 +6,10 @@
  
 
 // ========== GLOBAL VARIABLES ==========
-const bool preamble[] = {0, 0, 0, 1, 0, 0, 1, 1, 1,
-                         0, 0, 0, 1, 0, 0, 1, 1, 1};          // Preamble
-const bool pattern[] = {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};  // Data of our packet
-const bool delayBetweenTransmissions[30] = {0};               // Fill an array of zeros
+const bool preamble[] = {1, 1, 1, 0, 1, 1, 0, 0, 0, 0,                         
+                         1, 1, 1, 0, 1, 1, 0, 0, 0, 0};       // Preamble
+const bool pattern[] = {1, 1, 0, 1, 1, 1, 0, 1};              // Data of our packet
+const bool delayBetweenTransmissions[61] = {0};               // Fill an array of zeros
 bool* arrayStartPtr = NULL;                                   // Points to the beginning of an array
 uint8_t bitIndex = 0;                                         // Keeps track of our bit position
 

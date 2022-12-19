@@ -332,7 +332,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="PWM3" registerAlias="PWMCON"/>
-         <value>128</value>
+         <value>144</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="PWM3" registerAlias="PWMDCH"/>
@@ -352,7 +352,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="PWM3" registerAlias="PWMCON" settingAlias="PWMPOL"/>
-         <value>active_hi</value>
+         <value>active_lo</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="PWM3" registerAlias="PWMDCH" settingAlias="PWMDCH"/>
@@ -2586,7 +2586,7 @@
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>94ea64c9f1614f7d3831defec79bae2264c90fcaf85575269b952078f19331f8</hash>
+         <hash>b1d656115f5dff621998fba99c1ceb8ff687e3c24045d81b960ffd5b6b3885f0</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\device_config.h</file>
@@ -2613,12 +2613,12 @@
          <hash>6f17b48d5ff1833d8ddfd7b6e70a7033bfee73615ecab2295813f91efb658167</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\pin_manager.h</file>
-         <hash>61d1bb2e32e7ea014d3a3576b7a8c86a985453ddd274baa14e7913efa881228f</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\tmr2.c</file>
          <hash>3600a1b5bad30fa38e58d39c7ae577f4bf9975bdbeaa6b34e50e725c637ad3d7</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\pin_manager.h</file>
+         <hash>61d1bb2e32e7ea014d3a3576b7a8c86a985453ddd274baa14e7913efa881228f</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\tmr0.c</file>
@@ -2642,7 +2642,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\pwm3.c</file>
-         <hash>409a1eca588cb2ebaf4ad655c96a20dec56f4d48ecfb89ba33f673d9956a9829</hash>
+         <hash>5433896996129ef0137582e488849022f6726dd332459d4723f376696d9df575</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
