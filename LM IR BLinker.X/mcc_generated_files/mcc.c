@@ -62,8 +62,8 @@ void OSCILLATOR_Initialize(void)
 {
     // MFOEN disabled; LFOEN disabled; ADOEN disabled; HFOEN disabled; 
     OSCEN = 0x00;
-    // FRQ 8_MHz; 
-    OSCFRQ = 0x03;
+    // FRQ 16_MHz; 
+    OSCFRQ = 0x04;
     // TUN 0; 
     OSCTUNE = 0x00;
 }
