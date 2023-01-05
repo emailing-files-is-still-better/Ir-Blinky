@@ -1,7 +1,7 @@
-LM\ IR\ BLinker.X/build/*
-LM\ IR\ BLinker.X/dist/*
-LM\ IR\ BLinker.X/nbproject/*
-LM\ IR\ BLinker.X/debug/*
+build/*
+dist/*
+nbproject/*
+debug/*
 
-!LM\ IR\ BLinker.X/nbproject/configurations.xml
-!LM\ IR\ BLinker.X/nbproject/project.xml
+!nbproject/configurations.xml
+!nbproject/project.xml
