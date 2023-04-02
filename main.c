@@ -21,6 +21,7 @@ uint8_t bitIndex = 0;                                         // Keeps track of 
 void bitTimerInterrupt();
 void transmitBits(bool* arrayStart, uint8_t size);
 void setDataPattern(uint16_t newDataPattern);
+void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes);
 
 // ========== MAIN ==========
 void main(void)
@@ -48,6 +49,12 @@ void main(void)
       transmitBits(&data[0], sizeof(data));
       transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
     }
+    
+    // Or
+    
+    // while(1) {
+    //   stepThroughDataPatterns(10);       // Repeat each pattern 10 times
+    // }
 }
 
 
@@ -72,5 +79,18 @@ void setDataPattern(uint16_t newDataPattern) {
         // To set the left most array element (element 0), you need to address
         // the left most bit (bit 7 in an 8 bit number). Bit 0 is the right most bit.
         data[i] = ((newDataPattern & 1<<((DATA_LENGTH-1)-i)) != 0);
+    }
+}
+
+void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
+    uint16_t firstPattern = 0;
+    uint16_t lastPattern = (1<<DATA_LENGTH)-1;  // 0b11111111 for an 8-bit pattern
+    for(uint16_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
+        for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
+            setDataPattern(currPattern);
+            transmitBits(&preamble[0], sizeof(preamble));
+            transmitBits(&data[0], sizeof(data));
+            transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
+        }
     }
 }
