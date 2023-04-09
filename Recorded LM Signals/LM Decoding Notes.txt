@@ -1,0 +1,21 @@
+76:
+
+Preamble: 1110111000 1110111000
+First Low: 424us divided by 3 = 141us bits
+First High: 130us = 1 bit
+Second Low: 430us divided by 3 = 143us bits
+Second High: 424us divided by 3 = 141us bits
+
+Address: 1011010010 - Verified Working
+First Low: 149us 	=1
+First High: 130us	=0
+Second Low: 291us	=11
+Seond High: 127us	=0
+Third Low: 148 = 1
+
+Time between lows between repeats: 10.805ms(10,805us)
+
+92:
+
+Preamble: 1110110000 1110110000
+Address: 1101110100
