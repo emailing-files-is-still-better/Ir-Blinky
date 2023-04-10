@@ -17,13 +17,13 @@ const bool preamble[] = {1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
                          1, 1, 1, 0, 1, 1, 0, 0, 0, 0};       // Preamble
 bool data[DATA_LENGTH] = {0};                                 // Data of our packet                             
 const bool delayBetweenTransmissions[61] = {0};               // Fill an array of zeros
-bool* arrayStartPtr = NULL;                                   // Points to the beginning of an array
+const bool* arrayStartPtr = NULL;                             // Points to the beginning of an array
 uint8_t bitIndex = 0;                                         // Keeps track of our bit position
 
 
 // ========== FUNCTION PROTOTYPES ==========
 void bitTimerInterrupt();
-void transmitBits(bool* arrayStart, uint8_t size);
+void transmitBits(const bool* arrayStart, uint8_t size);
 void setDataPattern(uint32_t newDataPattern);
 void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes);
 
@@ -68,7 +68,7 @@ void bitTimerInterrupt() {
 }
 
 
-void transmitBits(bool* arrayStart, uint8_t size) {
+void transmitBits(const bool* arrayStart, uint8_t size) {
   bitIndex = 0;               // Re-initialize bit index
   arrayStartPtr = arrayStart; // Point to the start of the array we want to transmit
   while(bitIndex < size);     // Wait here until the bit index reaches the end of the array
