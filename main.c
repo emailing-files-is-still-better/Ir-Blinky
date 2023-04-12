@@ -1,7 +1,7 @@
 #include "mcc_generated_files/mcc.h"
 
 // ========== DEFINES ==========
-#define DATA_LENGTH   10                 // Number of bits transmitted in a packet (not including preamble))
+#define DATA_LENGTH   30                 // Number of bits transmitted in a packet (not including preamble))
 //#define DEFAULT_DATA  0b1011010010        // Default Data to transmit 76
 #define DEFAULT_DATA  0b1101110100        // Default Data to transmit 92
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
@@ -22,7 +22,7 @@
 const bool preamble[] = {1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
                          1, 1, 1, 0, 1, 1, 0, 0, 0, 0};       // Preamble 92
 bool data[DATA_LENGTH] = {0};                                 // Data of our packet                             
-const bool delayBetweenTransmissions[61] = {0};               // Fill an array of zeros
+const bool delayBetweenTransmissions[50] = {0};               // Fill an array of zeros. 61 was first value
 const bool* arrayStartPtr = NULL;                             // Points to the beginning of an array
 uint8_t bitIndex = 0;                                         // Keeps track of our bit position
 
@@ -53,18 +53,18 @@ void main(void)
     // Set the data pattern
     setDataPattern(DEFAULT_DATA);
 
-    while (1)
-    {
-      transmitBits(&preamble[0], sizeof(preamble));
-      transmitBits(&data[0], sizeof(data));
-      transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
-    }
+   // while (1)
+    //{
+    //  transmitBits(&preamble[0], sizeof(preamble));
+    //  transmitBits(&data[0], sizeof(data));
+    //  transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
+    //}
     
     // Or
     
-    // while(1) {
-    //   stepThroughDataPatterns(10);       // Repeat each pattern 10 times
-    // }
+     while(1) {
+       stepThroughDataPatterns(1);       // Repeat each pattern 10 times
+     }
 }
 
 
@@ -98,7 +98,7 @@ void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
     for(uint16_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
             setDataPattern(currPattern);
-            transmitBits(&preamble[0], sizeof(preamble));       // Comment this line out to skip preamble
+           // transmitBits(&preamble[0], sizeof(preamble));       // Comment this line out to skip preamble
             transmitBits(&data[0], sizeof(data));
             transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
         }
