@@ -6,6 +6,10 @@
 #define DEFAULT_DATA  0b1101110100        // Default Data to transmit 92
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
+
+#if DATA_LENGTH > 32
+    #error "Data length has to be 32 bits or less"
+#endif
  
 
 // ========== GLOBAL VARIABLES ==========
@@ -19,14 +23,14 @@ const bool preamble[] = {1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
                          1, 1, 1, 0, 1, 1, 0, 0, 0, 0};       // Preamble 92
 bool data[DATA_LENGTH] = {0};                                 // Data of our packet                             
 const bool delayBetweenTransmissions[61] = {0};               // Fill an array of zeros
-bool* arrayStartPtr = NULL;                                   // Points to the beginning of an array
+const bool* arrayStartPtr = NULL;                             // Points to the beginning of an array
 uint8_t bitIndex = 0;                                         // Keeps track of our bit position
 
 
 // ========== FUNCTION PROTOTYPES ==========
 void bitTimerInterrupt();
-void transmitBits(bool* arrayStart, uint8_t size);
-void setDataPattern(uint16_t newDataPattern);
+void transmitBits(const bool* arrayStart, uint8_t size);
+void setDataPattern(uint32_t newDataPattern);
 void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes);
 
 // ========== MAIN ==========
@@ -70,7 +74,7 @@ void bitTimerInterrupt() {
 }
 
 
-void transmitBits(bool* arrayStart, uint8_t size) {
+void transmitBits(const bool* arrayStart, uint8_t size) {
   bitIndex = 0;               // Re-initialize bit index
   arrayStartPtr = arrayStart; // Point to the start of the array we want to transmit
   while(bitIndex < size);     // Wait here until the bit index reaches the end of the array
@@ -80,7 +84,7 @@ void transmitBits(bool* arrayStart, uint8_t size) {
  *   For instance: setDataPattern(0b11011101) or setDataPattern(0xDD) or setDataPattern(221)
  *   Will result in data[] being set to {1, 1, 0, 1, 1, 1, 0, 1}
  */
-void setDataPattern(uint16_t newDataPattern) {
+void setDataPattern(uint32_t newDataPattern) {
     for(uint8_t i=0; i<DATA_LENGTH; i++) {
         // To set the left most array element (element 0), you need to address
         // the left most bit (bit 7 in an 8 bit number). Bit 0 is the right most bit.
@@ -94,7 +98,7 @@ void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
     for(uint16_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
             setDataPattern(currPattern);
-            transmitBits(&preamble[0], sizeof(preamble));
+            transmitBits(&preamble[0], sizeof(preamble));       // Comment this line out to skip preamble
             transmitBits(&data[0], sizeof(data));
             transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
         }
