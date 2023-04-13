@@ -88,14 +88,14 @@ void setDataPattern(uint32_t newDataPattern) {
     for(uint8_t i=0; i<DATA_LENGTH; i++) {
         // To set the left most array element (element 0), you need to address
         // the left most bit (bit 7 in an 8 bit number). Bit 0 is the right most bit.
-        data[i] = ((newDataPattern & 1<<((DATA_LENGTH-1)-i)) != 0);
+        data[i] = ((newDataPattern & 1UL<<((DATA_LENGTH-1)-i)) != 0);
     }
 }
 
 void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
-    uint16_t firstPattern = 0;
-    uint16_t lastPattern = (1<<DATA_LENGTH)-1;  // 0b11111111 for an 8-bit pattern
-    for(uint16_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
+    uint32_t firstPattern = 0;
+    uint32_t lastPattern = (1UL<<DATA_LENGTH)-1;  // 0b11111111 for an 8-bit pattern
+    for(uint32_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
             setDataPattern(currPattern);
            // transmitBits(&preamble[0], sizeof(preamble));       // Comment this line out to skip preamble
