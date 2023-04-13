@@ -43,6 +43,7 @@ void main(void)
     TMR0_Initialize();
     
     TMR0_SetInterruptHandler(bitTimerInterrupt);
+    TMR0_StopTimer();                               // Begin with bit timer stopped
 
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();
@@ -77,7 +78,10 @@ void bitTimerInterrupt() {
 void transmitBits(const bool* arrayStart, uint8_t size) {
   bitIndex = 0;               // Re-initialize bit index
   arrayStartPtr = arrayStart; // Point to the start of the array we want to transmit
+  
+  TMR0_StartTimer();          // Start bit timer
   while(bitIndex < size);     // Wait here until the bit index reaches the end of the array
+  TMR0_StopTimer();           // Stop bit timer
 }
 
 /* Loads data[] with bools to correspond to an input
