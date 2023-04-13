@@ -54,16 +54,7 @@ void main(void)
     // Set the data pattern
     setDataPattern(DEFAULT_DATA);
 
-   // while (1)
-    //{
-    //  transmitBits(&preamble[0], sizeof(preamble));
-    //  transmitBits(&data[0], sizeof(data));
-    //  transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
-    //}
-    
-    // Or
-    
-     while(1) {
+    while(1) {
        stepThroughDataPatterns(1);       // Repeat each pattern 10 times
      }
 }
@@ -102,7 +93,6 @@ void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
     for(uint32_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
             setDataPattern(currPattern);
-           // transmitBits(&preamble[0], sizeof(preamble));       // Comment this line out to skip preamble
             transmitBits(&data[0], sizeof(data));
             transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
         }
