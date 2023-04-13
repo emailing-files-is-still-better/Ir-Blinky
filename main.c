@@ -10,8 +10,7 @@
 
 
 // ========== GLOBAL VARIABLES ==========
-bool data[DATA_LENGTH] = {0};                                                   // Data of our packet                             
-const bool delayBetweenTransmissions[TIME_BETWEEN_TRANSMISSIONS_US/135] = {0};  // Fill an array of zeros
+bool data[DATA_LENGTH + TIME_BETWEEN_TRANSMISSIONS_US/135] = {0};               // Data of our packet
 const bool* arrayStartPtr = NULL;                                               // Points to the beginning of an array
 uint8_t bitIndex = 0;                                                           // Keeps track of our bit position
 
@@ -83,7 +82,6 @@ void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
             setDataPattern(currPattern);
             transmitBits(&data[0], sizeof(data));
-            transmitBits(&delayBetweenTransmissions[0], sizeof(delayBetweenTransmissions));
         }
     }
 }
