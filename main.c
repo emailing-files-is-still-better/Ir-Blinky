@@ -1,30 +1,19 @@
 #include "mcc_generated_files/mcc.h"
+#include "addresses.h"
 
 // ========== DEFINES ==========
-#define DATA_LENGTH   30                 // Number of bits transmitted in a packet (not including preamble))
-//#define DEFAULT_DATA  0b1011010010        // Default Data to transmit 76
-#define DEFAULT_DATA  0b1101110100        // Default Data to transmit 92
+#define DEFAULT_DATA                    ADDRESS_92  // Default address to transmit
+#define TIME_BETWEEN_TRANSMISSIONS_US   6750        // Time between transmissions (in us)
+
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
 
-#if DATA_LENGTH > 32
-    #error "Data length has to be 32 bits or less"
-#endif
- 
 
 // ========== GLOBAL VARIABLES ==========
-//const bool preamble[] = {1, 1, 1, 0, 1, 1, 1, 0, 0, 0,
-//                         1, 1, 1, 0, 1, 1, 1, 0, 0, 0};       // Preamble 76
-//
-//
-//
-
-const bool preamble[] = {1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
-                         1, 1, 1, 0, 1, 1, 0, 0, 0, 0};       // Preamble 92
-bool data[DATA_LENGTH] = {0};                                 // Data of our packet                             
-const bool delayBetweenTransmissions[50] = {0};               // Fill an array of zeros. 61 was first value
-const bool* arrayStartPtr = NULL;                             // Points to the beginning of an array
-uint8_t bitIndex = 0;                                         // Keeps track of our bit position
+bool data[DATA_LENGTH] = {0};                                                   // Data of our packet                             
+const bool delayBetweenTransmissions[TIME_BETWEEN_TRANSMISSIONS_US/135] = {0};  // Fill an array of zeros
+const bool* arrayStartPtr = NULL;                                               // Points to the beginning of an array
+uint8_t bitIndex = 0;                                                           // Keeps track of our bit position
 
 
 // ========== FUNCTION PROTOTYPES ==========
