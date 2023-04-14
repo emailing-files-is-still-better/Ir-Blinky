@@ -38,6 +38,7 @@ void main(void)
     TMR0_Initialize();
     
     TMR0_SetInterruptHandler(bitTimerInterrupt);
+    PWM_EN = false;                                 // Begin with LED off
     TMR0_StopTimer();                               // Begin with bit timer stopped
 
     // Enable the Global Interrupts
@@ -48,6 +49,10 @@ void main(void)
     
     // Set the data pattern
     setDataPattern(DEFAULT_DATA, DATA_LENGTH, currArrayStartPtr);
+    
+    // Send a known good address once
+    beginTransmission();
+    waitForTransmissionFinish();
 
     while(1) {
         stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 10);
