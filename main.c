@@ -8,15 +8,16 @@
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
 
-#define BITS_PER_TRANSMISSION   (TRANSMISSION_INTERVAL/135)
+#define BITS_TO_DELAY   ((TRANSMISSION_INTERVAL/135) - DATA_LENGTH)
 
 
 // ========== GLOBAL VARIABLES ==========
-bool data1[BITS_PER_TRANSMISSION] = {0};    // Data of our packet including delay (slot 1)
-bool data2[BITS_PER_TRANSMISSION] = {0};    // Data of our packet including delay (slot 2)
+bool data1[DATA_LENGTH] = {0};        // Data of our packet including delay (slot 1)
+bool data2[DATA_LENGTH] = {0};        // Data of our packet including delay (slot 2)
 bool* currArrayStartPtr = &data1[0];  // Points to the beginning of an array
 bool* nextArrayStartPtr = &data2[0];  // Points to the beginning of the next array to transmit
-uint8_t bitIndex = 0;                       // Keeps track of our bit position
+uint8_t bitIndex = 0;                 // Keeps track of our bit position
+uint32_t delayBitIndex = 0;           // Keeps track of delay bits
 
 
 // ========== FUNCTION PROTOTYPES ==========
@@ -62,7 +63,11 @@ void main(void)
 
 // ========== LOCAL FUNCTIONS ==========
 void bitTimerInterrupt(void) {
-    PWM_EN = currArrayStartPtr[bitIndex++];   // Enable or Disable PWM based on current bit, then increment index
+    if(bitIndex < DATA_LENGTH) {
+        PWM_EN = currArrayStartPtr[bitIndex++];   // Enable or Disable PWM based on current bit, then increment index
+    } else {
+        delayBitIndex++;                          // Delay another bit
+    }
 }
 
 
@@ -91,12 +96,13 @@ void repeatTransmission(uint16_t numOfTimes) {
 
 void beginTransmission(void) {
   bitIndex = 0;               // Re-initialize bit index
+  delayBitIndex = 0;          // Re-initialize delay bit index
   TMR0_StartTimer();          // Start bit timer
 }
 
 
 void waitForTransmissionFinish(void) {
-  while(bitIndex < BITS_PER_TRANSMISSION);     // Wait here until the bit index reaches the end of the array
+  while(delayBitIndex < BITS_TO_DELAY);        // Wait here until the delay bit index reaches the desired bits to delay
   TMR0_StopTimer();                            // Stop bit timer
 }
 
