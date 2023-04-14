@@ -16,7 +16,7 @@ bool data1[DATA_LENGTH] = {0};        // Data of our packet including delay (slo
 bool data2[DATA_LENGTH] = {0};        // Data of our packet including delay (slot 2)
 bool* currArrayStartPtr = &data1[0];  // Points to the beginning of an array
 bool* nextArrayStartPtr = &data2[0];  // Points to the beginning of the next array to transmit
-uint8_t bitIndex = 0;                 // Keeps track of our bit position
+uint8_t dataBitIndex = 0;             // Keeps track of data bits
 uint32_t delayBitIndex = 0;           // Keeps track of delay bits
 
 
@@ -62,15 +62,26 @@ void main(void)
 
 
 // ========== LOCAL FUNCTIONS ==========
+/* Every time the bit timer ticks, set PWM_EN to the value of the current bit, then
+ * move on to the next bit. Once you run out of data bits, start incrementing the
+ * delay index.
+*/
 void bitTimerInterrupt(void) {
-    if(bitIndex < DATA_LENGTH) {
-        PWM_EN = currArrayStartPtr[bitIndex++];   // Enable or Disable PWM based on current bit, then increment index
+    if(dataBitIndex < DATA_LENGTH) {
+        PWM_EN = currArrayStartPtr[dataBitIndex++];   // Enable or Disable PWM based on current bit, then increment index
     } else {
-        delayBitIndex++;                          // Delay another bit
+        PWM_EN = false;                               // Ensure you're not outputing anything
+        delayBitIndex++;                              // Delay another bit
     }
 }
 
 
+/* It loads an array space starting at currArrayStartPtr with the first pattern,
+ * then it transmits that pattern a certain number of times. During the final 
+ * transmission, it calculates the next value and loads a second array with the
+ * right bits. After the last transmission finishes, it swaps in the next array
+ * for the current one, then repeats this process until it reaches its final pattern.
+*/
 void stepThroughDataPatterns(uint32_t firstPattern, uint32_t finalPattern, uint16_t repeatEachPatternNTimes) {
     setDataPattern(firstPattern, DATA_LENGTH, currArrayStartPtr);
     uint32_t nextPattern = firstPattern;                // Next Pattern to transmit. Initialized to firstPattern, will be incremented before used
@@ -86,6 +97,9 @@ void stepThroughDataPatterns(uint32_t firstPattern, uint32_t finalPattern, uint1
 }
 
 
+/* Waits for the current transmission/delay cycle to finish, then starts a new one,
+ * repeats numOfTimes.
+*/
 void repeatTransmission(uint16_t numOfTimes) {
     for(uint16_t timesLeft=numOfTimes; timesLeft>0; timesLeft--) {
         waitForTransmissionFinish();
@@ -94,13 +108,21 @@ void repeatTransmission(uint16_t numOfTimes) {
 }
 
 
+/* Starts the bit timer and initializes the indicies. This kicks off a
+ * transmission/delay cycle, but does not stick around for it to end.
+*/
 void beginTransmission(void) {
-  bitIndex = 0;               // Re-initialize bit index
+  dataBitIndex = 0;           // Re-initialize data bit index
   delayBitIndex = 0;          // Re-initialize delay bit index
   TMR0_StartTimer();          // Start bit timer
 }
 
 
+/* This function waits for a current transmission/delay cycle to finish.
+ * Since delayBitIndex gets incremented after dataBitIndex, we just have
+ * to watch for the delay to finish. Then stop the timer to avoid junk
+ * bits from possibly being transmitted.
+*/
 void waitForTransmissionFinish(void) {
   while(delayBitIndex < BITS_TO_DELAY);        // Wait here until the delay bit index reaches the desired bits to delay
   TMR0_StopTimer();                            // Stop bit timer
@@ -119,10 +141,10 @@ void setDataPattern(uint32_t newDataPattern, uint8_t bitSize, bool* startPtr) {
     }
 }
 
-
+/* Swaps currArrayStartPtr and nextArrayStartPtr.
+*/
 void switchArrays(void) {
-    static bool* lastArrayStartPtr = &data1[0];       // static means it is only initialized once, then keeps its state for the next function call
-    lastArrayStartPtr = currArrayStartPtr;
+    bool* lastArrayStartPtr = currArrayStartPtr;
     currArrayStartPtr = nextArrayStartPtr;
     nextArrayStartPtr = lastArrayStartPtr;
 }
