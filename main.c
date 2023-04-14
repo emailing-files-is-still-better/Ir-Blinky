@@ -3,12 +3,12 @@
 
 // ========== DEFINES ==========
 #define DEFAULT_DATA                    ADDRESS_92  // Default address to transmit
-#define TIME_BETWEEN_TRANSMISSIONS_US   6750        // Time between transmissions (in us)
+#define TRANSMISSION_INTERVAL           10800       // Time between transmissions (in us)
 
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
 
-#define BITS_PER_TRANSMISSION   (DATA_LENGTH + TIME_BETWEEN_TRANSMISSIONS_US/135)
+#define BITS_PER_TRANSMISSION   (TRANSMISSION_INTERVAL/135)
 
 
 // ========== GLOBAL VARIABLES ==========
