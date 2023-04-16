@@ -2,8 +2,8 @@
 #include "addresses.h"
 
 // ========== DEFINES ==========
-#define DEFAULT_DATA                    ADDRESS_92  // Default address to transmit
-#define TRANSMISSION_INTERVAL           10200       // Time between transmissions (in us)
+#define DEFAULT_DATA                    ADDRESS_76  // Default address to transmit
+#define TRANSMISSION_INTERVAL           10800       // Time between transmissions (in us)
 
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
@@ -57,14 +57,19 @@ void main(void)
     //waitForTransmissionFinish();
     while(1) {
     beginTransmission();
-    //repeatTransmission(1000);
+    repeatTransmission(100);
+    waitForTransmissionFinish(); 
+    
+    setDataPattern(0b000000000000000000000000000000);
+    
+    beginTransmission();
+    repeatTransmission(10000);
     waitForTransmissionFinish();    
         
-        
     }
-    while(1) {
-        stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 10);
-     }
+   // while(1) {
+    //    stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 10);
+    // }
 }
 
 
