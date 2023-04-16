@@ -57,12 +57,12 @@ void main(void)
     //waitForTransmissionFinish();
     while(1) {
     beginTransmission();
-    repeatTransmission(1000);
+    //repeatTransmission(1000);
     waitForTransmissionFinish();    
         
         
     }
-    //while(1) {
+    while(1) {
         stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 10);
      }
 }
