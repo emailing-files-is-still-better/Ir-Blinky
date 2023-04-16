@@ -58,13 +58,15 @@ void main(void)
     while(1) {
     beginTransmission();
     repeatTransmission(100);
+    setDataPattern(0b000000000000000000000000000000, DATA_LENGTH, nextArrayStartPtr);
     waitForTransmissionFinish(); 
-    
-    setDataPattern(0b000000000000000000000000000000, DATA_LENGTH, currArrayStartPtr);
+    switchArrays();
     
     beginTransmission();
     repeatTransmission(10000);
-    waitForTransmissionFinish();    
+    setDataPattern(DEFAULT_DATA, DATA_LENGTH, nextArrayStartPtr);
+    waitForTransmissionFinish();
+    switchArrays();
         
     }
    // while(1) {
