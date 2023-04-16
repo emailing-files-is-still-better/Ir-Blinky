@@ -60,7 +60,7 @@ void main(void)
     repeatTransmission(100);
     waitForTransmissionFinish(); 
     
-    setDataPattern(0b000000000000000000000000000000);
+    setDataPattern(0b000000000000000000000000000000, DATA_LENGTH, currArrayStartPtr);
     
     beginTransmission();
     repeatTransmission(10000);
