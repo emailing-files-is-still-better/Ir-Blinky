@@ -3,7 +3,7 @@
 
 // ========== DEFINES ==========
 #define DEFAULT_DATA                    ADDRESS_92  // Default address to transmit
-#define TIME_BETWEEN_TRANSMISSIONS_US   6750        // Time between transmissions (in us)
+#define TIME_BETWEEN_TRANSMISSIONS_US   50000        // Time between transmissions (in us)
 
 #define LED_PIN     LATAbits.LATA3      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
@@ -43,7 +43,7 @@ void main(void)
     setDataPattern(DEFAULT_DATA);
 
     while(1) {
-       stepThroughDataPatterns(1);       // Repeat each pattern 10 times
+       stepThroughDataPatterns(50);       // Repeat each pattern 10 times
      }
 }
 
@@ -76,7 +76,7 @@ void setDataPattern(uint32_t newDataPattern) {
 }
 
 void stepThroughDataPatterns(uint16_t repeatEachPatternNTimes) {
-    uint32_t firstPattern = 0;
+    uint32_t firstPattern = 0b111011000011101111111000001100;
     uint32_t lastPattern = (1UL<<DATA_LENGTH)-1;  // 0b11111111 for an 8-bit pattern
     for(uint32_t currPattern = firstPattern; currPattern <= lastPattern; currPattern++) {
         for(uint16_t repeatNum = 0; repeatNum < repeatEachPatternNTimes; repeatNum++) {
