@@ -49,22 +49,23 @@ void main(void)
     INTERRUPT_PeripheralInterruptEnable();
     
     // Set the data pattern
-    setDataPattern(DEFAULT_DATA, DATA_LENGTH, currArrayStartPtr);
+    //setDataPattern(DEFAULT_DATA, DATA_LENGTH, currArrayStartPtr);
     
     // Send a known good address once
     //beginTransmission();
     //repeatTransmission(1000);
     //waitForTransmissionFinish();
     while(1) {
-    beginTransmission();
-    repeatTransmission(1);
-    setDataPattern(0b000000000000000000000000000000, DATA_LENGTH, nextArrayStartPtr);
-    waitForTransmissionFinish(); 
-    switchArrays();
+    //beginTransmission();
+    //repeatTransmission(1);
+    //setDataPattern(0b000000000000000000000000000000, DATA_LENGTH, nextArrayStartPtr);
+    //waitForTransmissionFinish(); 
+    //switchArrays();
     
     beginTransmission();
     repeatTransmission(600);
-    setDataPattern(DEFAULT_DATA, DATA_LENGTH, nextArrayStartPtr);
+    //setDataPattern(DEFAULT_DATA, DATA_LENGTH, nextArrayStartPtr);
+    setDataPattern(295, DATA_LENGTH, nextArrayStartPtr);
     waitForTransmissionFinish();
     switchArrays();
         
