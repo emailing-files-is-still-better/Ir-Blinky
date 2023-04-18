@@ -57,7 +57,7 @@ void main(void)
     waitForTransmissionFinish();
 
     while(1) {
-        stepThroughDataPatterns(300, ((1UL<<DATA_LENGTH) - 1), 9);
+        stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 9);
      }
 }
 
@@ -91,7 +91,10 @@ void stepThroughDataPatterns(uint32_t firstPattern, uint32_t finalPattern, uint1
         repeatTransmission(repeatEachPatternNTimes - 1);
         // Final transmission is still underway at this point
         nextPattern++;
-        setDataPattern(nextPattern, DATA_LENGTH, nextArrayStartPtr);
+        setDataPattern(nextPattern, 20, &nextArrayStartPtr[10]);
+        for(int i=0; i<10; i++) {
+            nextArrayStartPtr[i] = nextArrayStartPtr[i+10];
+            }
         waitForTransmissionFinish();
         switchArrays();
     } while(nextPattern <= finalPattern);
