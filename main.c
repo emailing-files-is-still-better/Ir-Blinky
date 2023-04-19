@@ -57,7 +57,7 @@ void main(void)
     waitForTransmissionFinish();
 
     while(1) {
-        stepThroughDataPatterns(94600, ((1UL<<DATA_LENGTH) - 1), 9);
+        stepThroughDataPatterns(103530, ((1UL<<DATA_LENGTH) - 1), 9);
      }
 }
 
