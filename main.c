@@ -2,7 +2,7 @@
 #include "addresses.h"
 
 // ========== DEFINES ==========
-#define DEFAULT_DATA                    ADDRESS_70  // Default address to transmit
+#define DEFAULT_DATA                    ADDRESS_89  // Default address to transmit
 #define TRANSMISSION_INTERVAL           30000       // Time between transmissions (in us)
 
 #define LED_PIN     LATAbits.LATA4      // Write to this to force the pin high (1) or low (0)
@@ -57,7 +57,7 @@ void main(void)
     waitForTransmissionFinish();
 
     while(1) {
-        stepThroughDataPatterns(0, ((1UL<<DATA_LENGTH) - 1), 9);
+        stepThroughDataPatterns(215160, ((1UL<<DATA_LENGTH) - 1), 9);
      }
 }
 
@@ -85,6 +85,9 @@ void bitTimerInterrupt(void) {
 */
 void stepThroughDataPatterns(uint32_t firstPattern, uint32_t finalPattern, uint16_t repeatEachPatternNTimes) {
     setDataPattern(firstPattern, DATA_LENGTH, currArrayStartPtr);
+            for(int i=0; i<10; i++) {
+            nextArrayStartPtr[i] = nextArrayStartPtr[i+10];
+            }
     uint32_t nextPattern = firstPattern;                // Next Pattern to transmit. Initialized to firstPattern, will be incremented before used
     do {
         beginTransmission();
