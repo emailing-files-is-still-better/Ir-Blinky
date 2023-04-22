@@ -53,11 +53,11 @@ void main(void)
     
     // Send a known good address once
     beginTransmission();
-    repeatTransmission(9000);
+    repeatTransmission(9);
     waitForTransmissionFinish();
 
     while(1) {
-        stepThroughDataPatterns(219215, ((1UL<<DATA_LENGTH) - 1), 200);
+        stepThroughDataPatterns(226374, ((1UL<<DATA_LENGTH) - 1), 200);
      }
 }
 
