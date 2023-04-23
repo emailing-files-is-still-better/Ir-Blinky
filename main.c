@@ -2,7 +2,7 @@
 #include "addresses.h"
 
 // ========== DEFINES ==========
-#define DEFAULT_DATA                    ADDRESS_36  // Default address to transmit
+#define DEFAULT_DATA                    ADDRESS_80  // Default address to transmit
 #define TRANSMISSION_INTERVAL           11000       // Time between transmissions (in us)
 
 #define LED_PIN     LATAbits.LATA4      // Write to this to force the pin high (1) or low (0)
@@ -53,11 +53,11 @@ void main(void)
     
     // Send a known good address once
     beginTransmission();
-    repeatTransmission(9000);
+    repeatTransmission(9);
     waitForTransmissionFinish();
 
     while(1) {
-        stepThroughDataPatterns(316617, ((1UL<<DATA_LENGTH) - 1), 200);
+        stepThroughDataPatterns(118780, ((1UL<<DATA_LENGTH) - 1), 200);
      }
 }
 
