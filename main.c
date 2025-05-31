@@ -2,12 +2,12 @@
 #include "addresses.h"
 
 // ========== DEFINES ==========
-#define DEFAULT_DATA                    ADDRESS_65  // Default address to transmit
+#define DEFAULT_DATA                    ADDRESS_86  // Default address to transmit
 #define TRANSMISSION_INTERVAL           11900       // Time between transmissions (in us)
 
-#define LED_PIN     LATAbits.LATA4      // Write to this to force the pin high (1) or low (0)
 #define PWM_EN      PWM3CONbits.EN      // Enables (1) or Disables (0) the PWM Output
 
+#define LED_PIN     LATAbits.LATA4      // Write to this to force the pin high (1) or low (0)
 #define BITS_TO_DELAY   ((TRANSMISSION_INTERVAL/135) - DATA_LENGTH)
 
 
