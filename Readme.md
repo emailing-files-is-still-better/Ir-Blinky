@@ -1,5 +1,9 @@
 # IR Blinky
 
+## Final Assembly Notes
+ - Used 20ohm resister for LED power
+ - Used Digikey VSLB3940 for LED at 940nm
+
 ## Observed Information
 
  - IR Modulation Frequency: 54.8kHz
